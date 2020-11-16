@@ -1,26 +1,25 @@
 ﻿<!DOCTYPE html>
 
-<html>
+<html class="h-100">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
 </head>
-<body>
+<body class="d-flex flex-column h-100">
 
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Onion</a>
     </nav>
 
-    <div class="conteudo">
+    <div class="conteudo flex-grow-1">
         @RenderBody()
     </div>
 
-    <hr />
-    <footer class="mt-4 text-center">
+    <div class="mt-4 text-center">
         <p>Onion @DateTime.Now.Year &copy;</p>
-    </footer>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

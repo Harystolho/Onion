@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Onion.DAL;
+using Onion.Models;
 
 namespace Onion
 {
@@ -22,6 +25,12 @@ namespace Onion
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ProjetoDAO>();
+            services.AddScoped<UsuarioDAO>();
+
+            services.AddDbContext<Context>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+
             services.AddControllersWithViews();
         }
 
@@ -46,7 +55,7 @@ namespace Onion
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Usuario}/{action=Index}");
+                    pattern: "{controller=Projeto}/{action=Index}");
             });
         }
     }
