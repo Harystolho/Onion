@@ -10,6 +10,11 @@ namespace Onion.Models
     [Table("Usuarios")]
     public class Usuario : BaseModel
     {
+        Usuario()
+        {
+            Projetos = new List<Projeto>();
+        }
+
         [Required(ErrorMessage = "Campo obrigatório!")]
         public string Nome { get; set; }
 
@@ -18,5 +23,7 @@ namespace Onion.Models
 
         [Required(ErrorMessage = "Campo obrigatório!")]
         public string Senha { get; set; }
+
+        public List<Projeto> Projetos { get; set; }
     }
 }
