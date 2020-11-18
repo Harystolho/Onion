@@ -14,6 +14,12 @@ namespace Onion.DAL
         public void Cadastrar(Projeto projeto)
         {
             _context.Projetos.Update(projeto);
+            _context.SaveChanges();
+        }
+
+        public List<Projeto> Listar()
+        {
+            return _context.Projetos.ToList();
         }
     }
 }

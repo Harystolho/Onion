@@ -18,7 +18,7 @@ namespace Onion.Controllers
         public IActionResult Index()
         {
             ViewBag.Title = "Onion";
-            return View();
+            return View(_projetoDAO.Listar());
         }
 
         public IActionResult Cadastrar()
@@ -35,7 +35,7 @@ namespace Onion.Controllers
                 return View(projeto);
             }
 
-
+            _projetoDAO.Cadastrar(projeto);
 
             return RedirectToAction("Index", "Projeto");
         }

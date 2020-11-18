@@ -1,4 +1,6 @@
-﻿<div class="container mt-3">
+﻿@model List<Projeto>
+
+<div class="container mt-3">
   
   <div class="row justify-content-end">
 	<a asp-action="Cadastrar" asp-controller="Projeto" class="btn btn-primary">
@@ -7,7 +9,14 @@
   </div>
 
   <div class="row mt-4">
-	adw
+	@foreach (Projeto projeto in Model)
+    {
+		<a asp-action="Detalhar" asp-controller="Projeto" asp-route-id="@projeto.Id" class="w-100">
+            <div class="projeto-container">
+				@projeto.Nome
+			</div>
+        </a>
+	}
   </div>
 
 </div>
