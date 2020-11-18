@@ -10,7 +10,7 @@ namespace Onion.Models
     [Table("Projetos")]
     public class Projeto : BaseModel
     {
-        Projeto()
+        public Projeto()
         {
             Tarefas = new List<Tarefa>();
         }

@@ -1,1 +1,24 @@
-﻿<h1>Cadastrar Projeto</h1>
+﻿@model Projeto
+
+<div class="container">
+
+    <div class="row mt-4">
+
+      <form asp-action="Cadastrar" asp-controller="Projeto" method="post">
+        <fieldset>
+            <legend>Cadastrar Projeto</legend>
+            <div asp-validation-summary="ModelOnly"></div>
+            
+            <div id="Nome" class="form-group">
+                <label asp-for="Nome">Nome:</label>
+                <input class="form-control" asp-for="Nome" type="text" placeholder="Nome do projeto" />
+                <span class="text-danger" asp-validation-for="Nome"></span>
+            </div>
+        
+            <input type="submit" class="btn btn-info" value="Cadastrar" />
+        </fieldset>
+      </form>  
+
+    </div>
+
+</div>
