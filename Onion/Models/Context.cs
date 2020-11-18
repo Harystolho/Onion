@@ -10,5 +10,6 @@ namespace Onion.Models
     {
         public Context(DbContextOptions options) : base(options) { }
         public DbSet<Projeto> Projetos { get; set; }
+        public DbSet<Tarefa> Tarefas { get; set; }
     }
 }

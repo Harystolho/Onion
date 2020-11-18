@@ -10,7 +10,7 @@ namespace Onion.Models
     [Table("Tarefas")]
     public class Tarefa : BaseModel
     {
-        Tarefa()
+        public Tarefa()
         {
             Prioridade = 0;
             Estado = EstadoDaTarefa.A_FAZER;
