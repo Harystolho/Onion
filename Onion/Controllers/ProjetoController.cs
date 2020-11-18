@@ -10,6 +10,7 @@ namespace Onion.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Title = "Onion";
             return View();
         }
     }
