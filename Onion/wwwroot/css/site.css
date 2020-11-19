@@ -68,3 +68,13 @@ body {
     box-shadow: 0 0 1px black;
     border-radius: 6px;
 }
+
+.tarefa-container {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    box-shadow: 0 0 1px black;
+    border-radius: 6px;
+}

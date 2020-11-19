@@ -39,5 +39,19 @@ namespace Onion.Controllers
 
             return RedirectToAction("Index", "Projeto");
         }
+
+        public IActionResult Detalhar(int id)
+        {
+            Projeto projeto = _projetoDAO.Buscar(id);
+            ViewBag.Title = projeto.Nome;
+            return View(projeto);
+        }
+
+        public IActionResult AvancarTarefa(int IdTarefa, int IdProjeto)
+        {
+
+            return RedirectToAction("Detalhar", "Projeto", new { id = IdProjeto });
+        }
+
     }
 }

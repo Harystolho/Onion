@@ -22,5 +22,17 @@ namespace Onion.Models
 
         public List<Tarefa> Tarefas { get; set; }
 
+        public void AdicionarTarefa(Tarefa tarefa)
+        {
+            Tarefas.Add(tarefa);
+        }
+
+        public List<Tarefa> BuscarTarefas(EstadoDaTarefa Estado)
+        {
+            return Tarefas
+                .FindAll(t => t.Estado == Estado)
+                .OrderBy(t => t.Prioridade)
+                .ToList();
+        }
     }
 }

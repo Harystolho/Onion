@@ -1,0 +1,30 @@
+﻿@model Projeto
+
+<div class="container">
+
+    <div class="row mt-4 mb-2 justify-content-between">
+        <h2>
+            @Model.Nome
+        </h2>
+        <a asp-action="Cadastrar" asp-controller="Tarefa" asp-route-IdProjeto="@Model.Id" class="btn btn-primary">
+            Criar Tarefa
+        </a>
+    </div>
+
+    <div class="row mb-2">
+        <h3>A Fazer</h3>
+    	@foreach (Tarefa tarefa in Model.BuscarTarefas(EstadoDaTarefa.A_FAZER))
+        {
+        <div class="tarefa-container">
+            <span class="badge badge-dark mr-1" style="width: 30px;">@tarefa.Prioridade</span>
+            <span class="flex-grow-1">@tarefa.Descricao</span>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <a asp-action="AvancarTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
+                ➡️
+              </a>
+            </div>
+        </div>
+        }
+    </div>
+
+</div>

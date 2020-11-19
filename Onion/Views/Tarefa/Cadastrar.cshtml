@@ -1,0 +1,32 @@
+﻿@model Tarefa
+
+<div class="container">
+
+    <div class="row mt-4">
+
+      <form asp-action="Cadastrar" asp-controller="Tarefa" method="post">
+        <fieldset>
+            <input name="idProjeto" value="@ViewBag.IdProjeto" type="hidden" />
+
+            <legend>Nova Tarefa</legend>
+            <div asp-validation-summary="ModelOnly"></div>
+            
+            <div id="Descricao" class="form-group">
+                <label asp-for="Descricao">Descrição:</label>
+                <input class="form-control" asp-for="Descricao" type="text" placeholder="Descrição" />
+                <span class="text-danger" asp-validation-for="Descricao"></span>
+            </div>
+        
+            <div id="Prioridade" class="form-group">
+                <label asp-for="Prioridade">Prioridade (0-10):</label>
+                <input class="form-control" asp-for="Prioridade" type="number" value="0" placeholder="Prioridade" />
+                <span class="text-danger" asp-validation-for="Prioridade"></span>
+            </div>
+
+            <input type="submit" class="btn btn-info" value="Adicionar" />
+        </fieldset>
+      </form>  
+
+    </div>
+
+</div>

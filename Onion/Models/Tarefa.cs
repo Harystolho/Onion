@@ -19,8 +19,10 @@ namespace Onion.Models
         [Required(ErrorMessage = "Campo obrigatório!")]
         public string Descricao { get; set; }
 
-        public int Prioridade { get; set; }
-
+        [Range(0, 10, ErrorMessage = "Deve ser de 0 a 10")]
+        
+        public int? Prioridade { get; set; }
+        
         public EstadoDaTarefa Estado { get; set; }
 
     }
