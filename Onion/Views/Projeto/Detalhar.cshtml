@@ -26,13 +26,18 @@
             <span class="badge badge-dark mr-1" style="width: 30px;">@tarefa.Prioridade</span>
             <span class="flex-grow-1">@tarefa.Descricao</span>
             <div class="btn-group" role="group">
-              <a asp-action="ApagarTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
-                🗑️
+              <a asp-action="AvancarTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
+                ➡️
               </a>
             </div>
             <div class="btn-group" role="group">
-              <a asp-action="AvancarTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
-                ➡️
+              <a asp-action="EditarTarefa" asp-controller="Tarefa" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
+                ✏️
+              </a>
+            </div>
+            <div class="btn-group" role="group">
+              <a asp-action="ApagarTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
+                🗑️
               </a>
             </div>
         </div>
@@ -47,11 +52,6 @@
             <span class="badge badge-dark mr-1" style="width: 30px;">@tarefa.Prioridade</span>
             <span class="flex-grow-1">@tarefa.Descricao</span>
             <div class="btn-group" role="group">
-              <a asp-action="ApagarTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
-                🗑️
-              </a>
-            </div>
-            <div class="btn-group" role="group">
               <a asp-action="RegredirTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
                 ◀️
               </a>
@@ -59,6 +59,16 @@
             <div class="btn-group" role="group">
               <a asp-action="AvancarTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
                 ▶️
+              </a>
+            </div>
+                        <div class="btn-group" role="group">
+              <a asp-action="EditarTarefa" asp-controller="Tarefa" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
+                ✏️
+              </a>
+            </div>
+            <div class="btn-group" role="group">
+              <a asp-action="ApagarTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
+                🗑️
               </a>
             </div>
         </div>
