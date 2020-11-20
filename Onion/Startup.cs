@@ -26,6 +26,7 @@ namespace Onion
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ProjetoDAO>();
+            services.AddScoped<TarefaDAO>();
             services.AddScoped<UsuarioDAO>();
 
             services.AddDbContext<Context>(options =>
