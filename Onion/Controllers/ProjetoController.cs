@@ -55,11 +55,6 @@ namespace Onion.Controllers
             return RedirectToAction("Index", "Projeto");
         }
 
-        public IActionResult EditarTarefa(int IdTarefa, int IdProjeto)
-        {
-            return RedirectToAction("Alterar", "Tarefa", new { id = IdTarefa, idProjeto = IdProjeto });
-        }
-
         public IActionResult AvancarTarefa(int IdTarefa, int IdProjeto)
         {
             Tarefa tarefa = _tarefaDAO.Buscar(IdTarefa);

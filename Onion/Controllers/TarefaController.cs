@@ -11,9 +11,11 @@ namespace Onion.Controllers
     public class TarefaController : Controller
     {
         private readonly ProjetoDAO _projetoDAO;
-        public TarefaController(ProjetoDAO projetoDAO)
+        private readonly TarefaDAO _tarefaDAO;
+        public TarefaController(ProjetoDAO projetoDAO, TarefaDAO tarefaDAO)
         {
             _projetoDAO = projetoDAO;
+            _tarefaDAO = tarefaDAO;
         }
         [HttpGet]
         public IActionResult Cadastrar(int IdProjeto)
@@ -50,6 +52,28 @@ namespace Onion.Controllers
         {
 
             return RedirectToAction("Detalhar", "Projeto");
+        }
+
+        [HttpGet]
+        public IActionResult EditarTarefa(int IdTarefa, int IdProjeto)
+        {
+            ViewBag.Title = "Editar Tarefa";
+            ViewBag.IdProjeto = IdProjeto;
+            return View(_tarefaDAO.Buscar(IdTarefa));
+        }
+
+        [HttpPost]
+        public IActionResult EditarTarefa(Tarefa tarefa, int IdProjeto)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.IdProjeto = IdProjeto;
+                return View(tarefa);
+            }
+
+            _tarefaDAO.Alterar(tarefa);
+
+            return RedirectToAction("Detalhar", "Projeto", new { id = IdProjeto });
         }
     }
 }
