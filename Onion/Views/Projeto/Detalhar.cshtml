@@ -6,9 +6,16 @@
         <h2>
             @Model.Nome
         </h2>
-        <a asp-action="Cadastrar" asp-controller="Tarefa" asp-route-IdProjeto="@Model.Id" class="btn btn-primary">
-            Criar Tarefa
-        </a>
+        <div>
+            <div class="btn-group mr-2" role="group">
+              <a asp-action="DeletarProjeto" asp-controller="Projeto" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
+                🗑️
+              </a>
+            </div>
+            <a asp-action="Cadastrar" asp-controller="Tarefa" asp-route-IdProjeto="@Model.Id" class="btn btn-primary">
+                Criar Tarefa
+            </a>
+        </div>
     </div>
 
     <div class="row mb-2">
@@ -63,7 +70,7 @@
     	@foreach (Tarefa tarefa in Model.BuscarTarefas(EstadoDaTarefa.CONCLUIDO))
         {
         <div class="tarefa-container">
-            <span class="badge badge-dark mr-1" style="width: 30px;">@tarefa.Prioridade</span>
+            <span style="width: 24px;">🏆</span>
             <span class="flex-grow-1">@tarefa.Descricao</span>
             <div class="btn-group" role="group">
               <a asp-action="RegredirTarefa" asp-controller="Projeto" asp-route-IdTarefa="@tarefa.Id" asp-route-IdProjeto="@Model.Id" class="btn btn-light">

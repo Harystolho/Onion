@@ -49,6 +49,12 @@ namespace Onion.Controllers
             return View(projeto);
         }
 
+        public IActionResult DeletarProjeto(int IdProjeto)
+        {
+            _projetoDAO.Deletar(IdProjeto);
+            return RedirectToAction("Index", "Projeto");
+        }
+
         public IActionResult AvancarTarefa(int IdTarefa, int IdProjeto)
         {
             Tarefa tarefa = _tarefaDAO.Buscar(IdTarefa);

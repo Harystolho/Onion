@@ -31,7 +31,7 @@ namespace Onion.Models
         {
             return Tarefas
                 .FindAll(t => t.Estado == Estado)
-                .OrderBy(t => t.Prioridade)
+                .OrderBy(t => -t.Prioridade)
                 .ToList();
         }
     }
