@@ -7,6 +7,12 @@
             @Model.Nome
         </h2>
         <div>
+            <div class="mr-2 btn-group">
+                <form asp-action="Detalhar" asp-controller="Projeto" method="post" class="form-inline">
+                    <input name="Id" value="@Model.Id" type="hidden" />
+                    <input name="Pesquisa" type="text" value="@ViewBag.Pesquisa" class="form-control" placeholder="Pesquisar">
+                </form>
+            </div>
             <div class="btn-group mr-2" role="group">
               <a asp-action="DeletarProjeto" asp-controller="Projeto" asp-route-IdProjeto="@Model.Id" class="btn btn-light">
                 🗑️

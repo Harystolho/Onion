@@ -42,10 +42,20 @@ namespace Onion.Controllers
             return RedirectToAction("Index", "Projeto");
         }
 
-        public IActionResult Detalhar(int id)
+        public IActionResult Detalhar(int id, string Pesquisa)
         {
             Projeto projeto = _projetoDAO.Buscar(id);
             ViewBag.Title = projeto.Nome;
+            ViewBag.Pesquisa = Pesquisa ?? "";
+ 
+            if (Pesquisa != null && Pesquisa != "")
+            {
+                projeto.Tarefas = projeto.Tarefas.FindAll(t =>
+                {
+                    return t.Descricao.ToLower().Contains(Pesquisa.ToLower());
+                });
+            }
+
             return View(projeto);
         }
 
