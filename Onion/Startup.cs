@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,17 @@ namespace Onion
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Connection")));
 
+            services.AddIdentity<Usuario, IdentityRole>().
+                AddEntityFrameworkStores<Context>().
+                AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/User/Login";
+                options.AccessDeniedPath = "/User/AccessDenied";
+            });
+
+            services.AddSession();
             services.AddControllersWithViews();
         }
 
@@ -49,6 +61,8 @@ namespace Onion
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
