@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Onion.DAL;
 using Onion.Models;
@@ -17,6 +18,8 @@ namespace Onion.Controllers
             _projetoDAO = projetoDAO;
             _tarefaDAO = tarefaDAO;
         }
+
+        [Authorize]
         public IActionResult Index()
         {
             ViewBag.Title = "Onion";

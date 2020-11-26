@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 
 namespace Onion.Models
 {
+    [Table("Usuarios")]
     public class UsuarioView : BaseModel
     {
+        public UsuarioView()
+        {
+            Projetos = new List<ProjetoDoUsuario>();
+        }
 
         [Display(Name = "Nome de usuário")]
         [Required(ErrorMessage = "Campo obrigatório!")]
@@ -26,9 +31,9 @@ namespace Onion.Models
         [Display(Name = "Confirmação da senha")]
         [Required(ErrorMessage = "Campo obrigatório!")]
         [NotMapped]
-        [Compare("Senha", ErrorMessage ="As senhas inseridas não são iguais")]
+        [Compare("Senha", ErrorMessage = "As senhas inseridas não são iguais")]
         public string ConfSenha { get; set; }
 
-        public List<Projeto> Projetos { get; set; }
+        public List<ProjetoDoUsuario> Projetos { get; set; }
     }
 }

@@ -11,8 +11,11 @@
 
     <nav class="navbar navbar-dark bg-dark justify-content-between">
         <a class="navbar-brand" href="/">Onion</a>
-        <a class="btn btn-outline-light" href="User"> Usuario </a>
- 
+        
+        @if (User?.Identity?.IsAuthenticated ?? false)
+        {
+            <a  asp-action="Sair" asp-controller="User" class="btn btn-warning">Sair</a>
+        }
     </nav>
 
     <div class="conteudo flex-grow-1">

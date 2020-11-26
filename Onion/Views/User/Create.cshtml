@@ -1,16 +1,11 @@
-﻿@model Onion.Models.UsuarioView
+﻿@model UsuarioView
 
-@{
-    ViewData["Title"] = "Create";
-}
+<div class="container">
 
-<h1>Create</h1>
+    <div class="row mt-4">
 
-<h4>UsuarioView</h4>
-<hr />
-<div class="row" style="padding:32px">
-    <div class="col-md-4">
-        <form asp-action="Create">
+      <form asp-action="Create" asp-controller="Usuario" method="post" class="w-100">
+        <fieldset>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
@@ -35,12 +30,9 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
+        </fieldset>
+      </form>  
+
     </div>
+
 </div>
-
-<div style="margin-left: 50%">
-    <a asp-action="Index">Back to List</a>
-</div>
-
-

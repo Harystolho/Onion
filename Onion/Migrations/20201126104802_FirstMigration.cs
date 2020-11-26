@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Onion.Migrations
 {
-    public partial class AddTableUsuario : Migration
+    public partial class FirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,11 +39,42 @@ namespace Onion.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    CriadoEm = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Projetos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CriadoEm = table.Column<DateTime>(nullable: false),
+                    Nome = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projetos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CriadoEm = table.Column<DateTime>(nullable: false),
+                    Nome = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Senha = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,6 +183,53 @@ namespace Onion.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Tarefas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CriadoEm = table.Column<DateTime>(nullable: false),
+                    Descricao = table.Column<string>(nullable: false),
+                    Prioridade = table.Column<int>(nullable: true),
+                    Estado = table.Column<int>(nullable: false),
+                    ProjetoId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tarefas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tarefas_Projetos_ProjetoId",
+                        column: x => x.ProjetoId,
+                        principalTable: "Projetos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjetosDosUsuarios",
+                columns: table => new
+                {
+                    UsuarioId = table.Column<int>(nullable: false),
+                    ProjetoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjetosDosUsuarios", x => new { x.UsuarioId, x.ProjetoId });
+                    table.ForeignKey(
+                        name: "FK_ProjetosDosUsuarios_Projetos_ProjetoId",
+                        column: x => x.ProjetoId,
+                        principalTable: "Projetos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProjetosDosUsuarios_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -190,6 +268,16 @@ namespace Onion.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjetosDosUsuarios_ProjetoId",
+                table: "ProjetosDosUsuarios",
+                column: "ProjetoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tarefas_ProjetoId",
+                table: "Tarefas",
+                column: "ProjetoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -210,10 +298,22 @@ namespace Onion.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ProjetosDosUsuarios");
+
+            migrationBuilder.DropTable(
+                name: "Tarefas");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Projetos");
         }
     }
 }

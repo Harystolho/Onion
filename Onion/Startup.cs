@@ -19,6 +19,7 @@ namespace Onion
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            // https://v6.exchangerate-api.com/v6/909bdf33ae030fd845200b59/latest/BRL
         }
 
         public IConfiguration Configuration { get; }

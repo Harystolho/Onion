@@ -7,5 +7,8 @@ namespace Onion.DAL
 {
     public class UsuarioDAO
     {
+
+        
+
     }
 }

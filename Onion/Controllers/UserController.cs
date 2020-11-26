@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,58 +15,36 @@ namespace Onion.Controllers
     {
         private readonly Context _context;
         private readonly UserManager<Usuario> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
 
-        public UserController(Context context, UserManager<Usuario> userManager)
+        public UserController(Context context, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
         {
             _context = context;
             _userManager = userManager;
-        }
-
-        // GET: User
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Usuarios.ToListAsync());
-        }
-
-        // GET: User/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var usuarioView = await _context.Usuarios
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarioView == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuarioView);
+            _signInManager = signInManager;
         }
 
         // GET: User/Create
+        [AllowAnonymous]
         public IActionResult Create()
         {
+            ViewBag.Title = "Criar usuario";
             return View();
         }
 
         // POST: User/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Create([Bind("Nome,Email,Senha,Id,CriadoEm,ConfSenha")] UsuarioView usuarioView)
         {
             IdentityUser user = new IdentityUser();
             if (ModelState.IsValid)
             {
-                 Usuario usuario = new Usuario
+                Usuario usuario = new Usuario
                 {
                     UserName = usuarioView.Nome,
                     Email = usuarioView.Email,
-                    
                 };
 
                 IdentityResult resultado = await _userManager.CreateAsync(usuario, usuarioView.Senha);
@@ -73,6 +52,7 @@ namespace Onion.Controllers
                 {
                     _context.Add(usuarioView);
                     await _context.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index));
                 }
                 AdicionarErros(resultado);
@@ -82,95 +62,49 @@ namespace Onion.Controllers
 
         public void AdicionarErros(IdentityResult resultado)
         {
-            foreach(var erro in resultado.Errors)
+            foreach (var erro in resultado.Errors)
             {
                 ModelState.AddModelError("", erro.Description);
             }
         }
 
-        // GET: User/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [AllowAnonymous]
+        public IActionResult Login()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var usuarioView = await _context.Usuarios.FindAsync(id);
-            if (usuarioView == null)
-            {
-                return NotFound();
-            }
-            return View(usuarioView);
+            ViewBag.Title = "Fazer login";
+            return View();
         }
 
-        // POST: User/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Nome,Email,Senha,Id,CriadoEm")] UsuarioView usuarioView)
+        public async Task<IActionResult> Login([Bind("Email,Senha")] UsuarioView usuarioView)
         {
-            if (id != usuarioView.Id)
+            if(usuarioView.Email == null)
             {
-                return NotFound();
+                ModelState.AddModelError("", "Usuario nao existe");
+                return View(usuarioView);
             }
 
-            if (ModelState.IsValid)
+            Usuario usuario = await _userManager.FindByEmailAsync(usuarioView.Email);
+            if (usuario == null)
             {
-                try
-                {
-                    _context.Update(usuarioView);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioViewExists(usuarioView.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", "Usuario nao existe");
+                return View(usuarioView);
             }
+
+            await _signInManager.SignOutAsync();
+            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(usuario, usuarioView.Senha, false, false);
+
+            if (result.Succeeded) return Redirect("/");
+
+            ModelState.AddModelError("", "Senha invalida");
             return View(usuarioView);
         }
 
-        // GET: User/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Sair()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var usuarioView = await _context.Usuarios
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarioView == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuarioView);
+            await _signInManager.SignOutAsync();
+            return Redirect("/User/Login");
         }
 
-        // POST: User/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var usuarioView = await _context.Usuarios.FindAsync(id);
-            _context.Usuarios.Remove(usuarioView);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool UsuarioViewExists(int id)
-        {
-            return _context.Usuarios.Any(e => e.Id == id);
-        }
     }
 }
