@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -38,7 +39,6 @@ namespace Onion.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create([Bind("Nome,Email,Senha,Id,CriadoEm,ConfSenha")] UsuarioView usuarioView)
         {
-            IdentityUser user = new IdentityUser();
             if (ModelState.IsValid)
             {
                 Usuario usuario = new Usuario
@@ -48,6 +48,7 @@ namespace Onion.Controllers
                 };
 
                 IdentityResult resultado = await _userManager.CreateAsync(usuario, usuarioView.Senha);
+
                 if (resultado.Succeeded)
                 {
                     _context.Add(usuarioView);
@@ -78,7 +79,7 @@ namespace Onion.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([Bind("Email,Senha")] UsuarioView usuarioView)
         {
-            if(usuarioView.Email == null)
+            if (usuarioView.Email == null)
             {
                 ModelState.AddModelError("", "Usuario nao existe");
                 return View(usuarioView);
@@ -94,7 +95,16 @@ namespace Onion.Controllers
             await _signInManager.SignOutAsync();
             Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(usuario, usuarioView.Senha, false, false);
 
-            if (result.Succeeded) return Redirect("/");
+            if (result.Succeeded)
+            {
+                var identity = new ClaimsIdentity(new [] {
+                    new Claim("user_email", usuario.Email)
+                });
+
+                HttpContext.User.AddIdentity(identity);
+
+                return Redirect("/");
+            }
 
             ModelState.AddModelError("", "Senha invalida");
             return View(usuarioView);

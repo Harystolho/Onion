@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Onion.DAL;
 using Onion.Models;
@@ -13,10 +14,14 @@ namespace Onion.Controllers
     {
         private readonly ProjetoDAO _projetoDAO;
         private readonly TarefaDAO _tarefaDAO;
-        public ProjetoController(ProjetoDAO projetoDAO, TarefaDAO tarefaDAO)
+        private readonly UsuarioDAO _usuarioDAO;
+        private readonly UserManager<Usuario> _userManager;
+        public ProjetoController(ProjetoDAO projetoDAO, TarefaDAO tarefaDAO, UserManager<Usuario> userManager, UsuarioDAO usuarioDAO)
         {
             _projetoDAO = projetoDAO;
             _tarefaDAO = tarefaDAO;
+            _usuarioDAO = usuarioDAO;
+            _userManager = userManager;
         }
 
         [Authorize]
@@ -42,6 +47,18 @@ namespace Onion.Controllers
 
             _projetoDAO.Cadastrar(projeto);
 
+            var email = HttpContext.User.Claims.First(c => c.Type == "user_email").Value;
+            var user = _usuarioDAO.BuscarPorEmail(email);
+
+            var pu = new ProjetoDoUsuario()
+            {
+                Usuario = user,
+                Projeto = projeto
+            };
+
+            user.Projetos.Add(pu);
+            _usuarioDAO.Atualizar(user);
+
             return RedirectToAction("Index", "Projeto");
         }
 
@@ -50,7 +67,7 @@ namespace Onion.Controllers
             Projeto projeto = _projetoDAO.Buscar(id);
             ViewBag.Title = projeto.Nome;
             ViewBag.Pesquisa = Pesquisa ?? "";
- 
+
             if (Pesquisa != null && Pesquisa != "")
             {
                 projeto.Tarefas = projeto.Tarefas.FindAll(t =>
