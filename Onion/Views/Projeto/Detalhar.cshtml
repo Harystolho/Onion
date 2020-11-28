@@ -8,6 +8,13 @@
         </h2>
         <div>
             <div class="mr-2 btn-group">
+                <form asp-action="Compartilhar" asp-controller="Projeto" method="post" class="form-inline">
+                    <input name="Id" value="@Model.Id" type="hidden" />
+                    <input name="Email" type="email" class="form-control mr-2" placeholder="Digite o email para compartilhar" style="width: 300px;">
+                    <input type="submit" class="btn btn-info" value="Compartilhar" />
+                </form>
+            </div>
+            <div class="mr-2 btn-group">
                 <form asp-action="Detalhar" asp-controller="Projeto" method="post" class="form-inline">
                     <input name="Id" value="@Model.Id" type="hidden" />
                     <input name="Pesquisa" type="text" value="@ViewBag.Pesquisa" class="form-control" placeholder="Pesquisar">
@@ -22,6 +29,13 @@
                 Criar Tarefa
             </a>
         </div>
+    </div>
+
+    <div id="projetoErro" class="text-danger mb-2">
+        <script>
+            var error = decodeURIComponent(window.location.search.split("erro=")[1]);
+            if(error !== "undefined") document.getElementById("projetoErro").innerHTML = error;
+        </script>
     </div>
 
     <div class="row mb-2">

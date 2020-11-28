@@ -16,6 +16,17 @@ namespace Onion.DAL
             return _context.Usuarios.Where(u => u.Nome == Nome).First();
         }
 
+        public UsuarioView BuscarPorEmail(string Email)
+        {
+            try
+            {
+                return _context.Usuarios.Where(u => u.Email == Email).First();
+            } catch (InvalidOperationException)
+            {
+                return null;
+            }
+        }
+
         public void Atualizar(UsuarioView usuario)
         {
             _context.Usuarios.Update(usuario);

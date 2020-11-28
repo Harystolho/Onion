@@ -111,5 +111,24 @@ namespace Onion.Controllers
             return RedirectToAction("Detalhar", "Projeto", new { id = IdProjeto });
         }
 
+        public IActionResult Compartilhar(int Id, string Email)
+        {
+            var user = _usuarioDAO.BuscarPorEmail(Email);
+
+            if (user == null) return RedirectToAction("Detalhar", "Projeto", new { id = Id, erro = "Esse usuario nao existe" });
+            if (user.Nome == User.Identity.Name) return RedirectToAction("Detalhar", "Projeto", new { id = Id });
+
+            var pu = new ProjetoDoUsuario()
+            {
+                Usuario = user,
+                Projeto = _projetoDAO.Buscar(Id)
+            };
+
+            user.Projetos.Add(pu);
+            _usuarioDAO.Atualizar(user);
+
+            return RedirectToAction("Detalhar", "Projeto", new { id = Id });
+        }
+
     }
 }
