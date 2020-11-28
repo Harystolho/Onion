@@ -26,9 +26,15 @@ namespace Onion.DAL
             _context.Projetos.Remove(Buscar(IdProjeto));
             _context.SaveChanges();
         }
-        public List<Projeto> Listar() => _context.Projetos
-            .Include(p => p.Tarefas)
-            .ToList();
+        public List<Projeto> Listar(int IdUsuario)
+        {
+            return _context.ProjetoDoUsuarios.
+                Where(p => p.UsuarioId == IdUsuario)
+                .Include(p => p.Projeto)
+                .ThenInclude(p => p.Tarefas)
+                .Select(p => p.Projeto)
+                .ToList();
+        }
 
         public Projeto Buscar(int id) =>
             _context.Projetos

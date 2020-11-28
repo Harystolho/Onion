@@ -54,7 +54,7 @@ namespace Onion.Controllers
                     _context.Add(usuarioView);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("/");
                 }
                 AdicionarErros(resultado);
             }
@@ -93,14 +93,15 @@ namespace Onion.Controllers
             }
 
             await _signInManager.SignOutAsync();
-            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(usuario, usuarioView.Senha, false, false);
+            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(usuario, usuarioView.Senha ?? "", false, false);
 
             if (result.Succeeded)
             {
-                var identity = new ClaimsIdentity(new [] {
+                var identity = new ClaimsIdentity(new[] {
                     new Claim("user_email", usuario.Email)
                 });
 
+                User.AddIdentity(identity);
                 HttpContext.User.AddIdentity(identity);
 
                 return Redirect("/");

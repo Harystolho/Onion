@@ -11,9 +11,9 @@ namespace Onion.DAL
         private readonly Context _context;
         public UsuarioDAO(Context context) => _context = context;
 
-        public UsuarioView BuscarPorEmail(string Email)
+        public UsuarioView BuscarPorNome(string Nome)
         {
-            return _context.Usuarios.Where(u => u.Email == Email).First();
+            return _context.Usuarios.Where(u => u.Nome == Nome).First();
         }
 
         public void Atualizar(UsuarioView usuario)

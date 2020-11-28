@@ -28,7 +28,10 @@ namespace Onion.Controllers
         public IActionResult Index()
         {
             ViewBag.Title = "Onion";
-            return View(_projetoDAO.Listar());
+
+            var user = _usuarioDAO.BuscarPorNome(User.Identity.Name);
+
+            return View(_projetoDAO.Listar(user.Id));
         }
 
         public IActionResult Cadastrar()
@@ -47,8 +50,7 @@ namespace Onion.Controllers
 
             _projetoDAO.Cadastrar(projeto);
 
-            var email = HttpContext.User.Claims.First(c => c.Type == "user_email").Value;
-            var user = _usuarioDAO.BuscarPorEmail(email);
+            var user = _usuarioDAO.BuscarPorNome(User.Identity.Name);
 
             var pu = new ProjetoDoUsuario()
             {
