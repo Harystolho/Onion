@@ -2,7 +2,12 @@
 
 <div class="container mt-3">
   
-  <div class="row justify-content-end">
+  <div class="row justify-content-between">
+	<div>
+		<span class="badge badge-info">Cotação USD: <span id="brlToUsd"></span> </span>
+		<span> </span>
+		<span class="badge badge-info">Cotação EUR: <span id="brlToEur"></span> </span>
+	</div>
 	<a asp-action="Cadastrar" asp-controller="Projeto" class="btn btn-primary">
 		Novo Projeto
 	</a>
@@ -36,3 +41,23 @@
   </div>
 
 </div>
+
+<script>
+
+	fetch("https://v6.exchangerate-api.com/v6/909bdf33ae030fd845200b59/latest/BRL")
+		.then(result => {
+		result.json().then(json =>{
+			const usd = json.conversion_rates.USD;
+			const eur = json.conversion_rates.EUR;
+
+			const brlToUsd = 1 / usd;
+			const brlToEur = 1 / eur;
+
+			document.getElementById("brlToUsd").innerHTML = (Math.round(brlToUsd * 100) / 100).toFixed(3);
+			document.getElementById("brlToEur").innerHTML = (Math.round(brlToEur * 100) / 100).toFixed(3);
+			})
+		}).catch(e => {
+			console.log(e);
+		})
+
+</script>
