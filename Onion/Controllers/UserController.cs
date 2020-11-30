@@ -54,7 +54,7 @@ namespace Onion.Controllers
                     _context.Add(usuarioView);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("/");
+                    return RedirectToAction("Index", "");
                 }
                 AdicionarErros(resultado);
             }
