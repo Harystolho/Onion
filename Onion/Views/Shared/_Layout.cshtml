@@ -6,12 +6,14 @@
     <title>@ViewBag.Title</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
+    <link rel="icon" href="~/assets/icon.png">
 </head>
 <body class="d-flex flex-column h-100">
 
     <nav class="navbar navbar-dark bg-dark justify-content-between">
-        <a class="navbar-brand" href="/">Onion</a>
-        
+        <a runat="server" href="~/Projeto/Index">
+            <img src="~/assets/new_logo.png" style="width: 25vh; height:auto" />
+        </a>
         @if (User?.Identity?.IsAuthenticated ?? false)
         {
             <a  asp-action="Sair" asp-controller="User" class="btn btn-warning">Sair</a>
